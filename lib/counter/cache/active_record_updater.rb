@@ -9,6 +9,10 @@ module Counter
         counter_for(record).update(:decr)
       end
 
+      def after_update(record)
+        counter_for(record).update(:recount)
+      end
+
       private
 
       def counter_for(object)

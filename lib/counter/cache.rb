@@ -16,10 +16,15 @@ module Counter
       @configuration ||= Counter::Cache::Config.new
     end
 
+    def counter_cache_recount(options)
+      ActiveRecordUpdater.new(options).after_update(self)
+    end
+
     def self.included(base)
       base.instance_eval do
         def counter_cache_on(options)
           after_create ActiveRecordUpdater.new(options)
+          after_update ActiveRecordUpdater.new(options)
           after_destroy ActiveRecordUpdater.new(options)
         end
       end
